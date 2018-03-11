@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class ExternalSorting {
 	
 	private File file;
