@@ -2,8 +2,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
 /**
  * Handle file management
@@ -25,16 +30,20 @@ public class File {
 
 	public Integer[] read(int initialLine, int finalLine) {
 		Integer[] lines = new Integer[finalLine - initialLine +1];
+		List <Integer> newLines = new ArrayList<>();
+		
 		try (BufferedReader br = new BufferedReader(new FileReader(this.getFileFullName()))) {
 			
 			String line;
 			
 			int currentLine = 1;
-			int i = 0;
+//			int i = 0;
 			while ((line = br.readLine()) != null) {
 				if (initialLine <= currentLine && finalLine >= currentLine) {
-					lines[i] = Integer.parseInt(line);
-					i++;
+					newLines.add(Integer.parseInt(line));
+//					lines[i] = Integer.parseInt(line);
+					
+//					i++;
 				}
 				currentLine++;
 			}
@@ -42,11 +51,46 @@ public class File {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return (lines[0] == null) ? null : lines;
+		return (newLines.isEmpty()) ? null : newLines.toArray(new Integer[newLines.size()]);
+//		return (lines[0] == null) ? null : lines;
 	}
 
 	public static void read(String name, String extersion, String path) {
 		// TODO Auto-generated method stub
+	}
+	
+	public String readLine(int line) {
+		String lineValue = null;
+		try (Stream<String> lines = Files.lines(Paths.get(this.getFileFullName()))) {
+			lineValue = lines.skip(line - 1).findFirst().get();
+		} catch (NoSuchElementException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return lineValue;
+	}
+	
+	public static String readLine(String name, String extersion, String path, int line) {
+		String lineValue = null;
+		try (Stream<String> lines = Files.lines(Paths.get(path + name + "." + extersion))) {
+			lineValue = lines.skip(line - 1).findFirst().get();
+		} catch (NoSuchElementException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return lineValue;
+	}
+	
+	public boolean existFile(String path, String name) {
+		boolean exist = true;
+		try (Stream<String> lines = Files.lines(Paths.get(path + name))) {
+			lines.findFirst().get();
+		} catch (NoSuchFileException e) {
+			exist = false;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return exist;
 	}
 
 	public void write(String content) {
