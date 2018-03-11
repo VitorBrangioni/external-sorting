@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Handle file management
@@ -25,8 +23,8 @@ public class File {
 		this.setPath(path);
 	}
 
-	public String[] read(int initialLine, int finalLine) {
-		String[] lines = new String[finalLine - initialLine +1];
+	public Integer[] read(int initialLine, int finalLine) {
+		Integer[] lines = new Integer[finalLine - initialLine +1];
 		try (BufferedReader br = new BufferedReader(new FileReader(this.getFileFullName()))) {
 			
 			String line;
@@ -35,7 +33,7 @@ public class File {
 			int i = 0;
 			while ((line = br.readLine()) != null) {
 				if (initialLine <= currentLine && finalLine >= currentLine) {
-					lines[i] = line;
+					lines[i] = Integer.parseInt(line);
 					i++;
 				}
 				currentLine++;

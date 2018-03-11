@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class ExternalSorting {
 	
@@ -14,23 +15,28 @@ public class ExternalSorting {
 		int initialLine = 1;
 		int finalLine = 3;
 		
-		String[] values = this.file.read(initialLine, finalLine);
+		Integer[] values = this.file.read(initialLine, finalLine);
 		
 		while (values != null) {
-			Sort.mergeSort(values);
+			System.out.println("ANTES DO SORT: ");
+			System.out.println(Arrays.toString(values));
 			
-			for(String value: values) {
-				File.write("tmp_" + countTmpFile, "txt", "/var/www/html/study/external-sorting/tmp-files/", value);
+			Sort.mergeSort(values, 0, values.length -1);
+			
+			System.out.println("DEPOIS DO SORT: ");
+			System.out.println(Arrays.toString(values));
+			
+			for(int value: values) {
+				File.write("tmp_" + countTmpFile, "txt", "/var/www/html/study/external-sorting/tmp-files/", String.valueOf(value));
 			}
+			
+			
 			initialLine += maxMemory;
 			finalLine += maxMemory;
 			
 			values = this.file.read(initialLine, finalLine);
 			countTmpFile++;
 		}
-			
-
-		
 
 	}
 	
