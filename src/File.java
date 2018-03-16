@@ -29,7 +29,6 @@ public class File {
 	}
 
 	public Integer[] read(int initialLine, int finalLine) {
-		Integer[] lines = new Integer[finalLine - initialLine +1];
 		List <Integer> newLines = new ArrayList<>();
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(this.getFileFullName()))) {

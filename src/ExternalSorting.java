@@ -1,9 +1,7 @@
-import sun.java2d.SurfaceDataProxy.CountdownTracker;
-
 public class ExternalSorting {
 
 	private File file;
-	private int maxMemory = 3;
+	private int maxMemory = 5;
 	private int countTmpFile = 1;
 
 	public ExternalSorting(String fileName, String fileExtension, String filePath) {
@@ -12,7 +10,7 @@ public class ExternalSorting {
 
 	public void sort() {
 		int initialLine = 1;
-		int finalLine = 3;
+		int finalLine = this.maxMemory;
 
 		for (Integer[] values = this.file.read(initialLine, finalLine); values != null; countTmpFile++) {
 			Sort.mergeSort(values, 0, values.length - 1);
@@ -27,15 +25,6 @@ public class ExternalSorting {
 			values = this.file.read(initialLine, finalLine);
 		}
 
-		// percorrer os temp files de 2 em 2
-		// pegar cada elemento do arq e comparar com o outro
-		// vai gerar um terceiro file temp, se gerar soma mais um
-
-		/*
-		 * String leftELement, rightElement;
-		 * 
-		 * for (int i = 1, j = 1, file = 1; file <= countTmpFile; i++) { }
-		 */
 
 		for (int fileOne = 1, fileTwo = 2; fileTwo < countTmpFile; fileOne += 2, fileTwo += 2) {
 			// verificando se ja foi ordenado tudo
